@@ -108,7 +108,7 @@ function CreateGraph() {
   });
 
   // update graph
-  Graph.data.datasets[0].label = `Burn Rate ${BurnOutData[BurnOutData.length - 1] > 0 ? "+ve" : "-ve"}`;
+  Graph.data.datasets[0].label = `Burn Rate`;
   Graph.data.datasets[0].data = BurnOutData;
   Graph.update();
 
