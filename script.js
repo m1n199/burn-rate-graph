@@ -112,8 +112,8 @@ function CreateGraph() {
   Graph.data.datasets[0].data = BurnOutData;
   Graph.update();
 
-  if (BurnOutData[BurnOutData.length - 1] && BurnOutData[BurnOutData.length - 1] > 0) BurnRateSatus("Burn Rate Positive +ve !");
-  else BurnRateSatus("Burn Rate Negative -ve !");
+  if (BurnOutData[BurnOutData.length - 1] && BurnOutData[BurnOutData.length - 1] > 0) BurnRateSatus("Burn Rate Positive !");
+  else BurnRateSatus("Burn Rate Negative !");
 }
 document.querySelector("form button")?.addEventListener("click", CreateGraph);
   
