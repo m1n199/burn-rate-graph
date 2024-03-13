@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div id="root" class="w-screen h-screen bg-green-100 overflow-x-hidden">
+      <div
+        id="form-container"
+        class="w-full h-1/2 items-center justify-center flex"
+      >
+        <div id="details">
+          <form action="">
+            <div class="main flex space-x-2 border-b-2 border-black py-4">
+              <div>
+                <label for="CurrentBalance">CurrentBalance</label><br />
+                <input
+                  type="number"
+                  id="CurrentBalance"
+                  min="0"
+                  value="1000000"
+                  required
+                />
+              </div>
+              <div>
+                <label for="MonthlyExpensive">MonthlyExpensive</label><br />
+                <input
+                  type="number"
+                  id="MonthlyExpensive"
+                  min="0"
+                  value="20000"
+                  required
+                />
+              </div>
+              <div>
+                <label for="CurrentExpensive">MonthlyRevenue</label><br />
+                <input
+                  type="number"
+                  id="MonthlyRevenue"
+                  min="0"
+                  value="50000"
+                  required
+                />
+              </div>
+              <div>
+                <label for="GrowthRatePercentage">GrowthRatePercentage</label
+                ><br />
+                <input
+                  type="number"
+                  id="GrowthRatePercentage"
+                  value="10"
+                  required
+                />
+              </div>
+            </div>
+            <div class="extra flex space-x-2 border-b-2 border-black py-4">
+              <div data-burn-rate="additional" style="display: block">
+                <label for="ExpensiveAdditionMonth"
+                  >ExpensiveAdditionMonth</label
+                ><br />
+                <select id="ExpensiveAdditionMonth">
+                  <option value="-1">none</option>
+                  <option value="0">January</option>
+                  <option value="1">February</option>
+                  <option value="2">March</option>
+                  <option value="3" selected>April</option>
+                  <option value="4">May</option>
+                  <option value="5">June</option>
+                  <option value="6">July</option>
+                  <option value="7">August</option>
+                  <option value="8">September</option>
+                  <option value="9">October</option>
+                  <option value="10">November</option>
+                  <option value="11">December</option>
+                </select>
+              </div>
+              <div data-burn-rate="additional" style="display: block">
+                <label for="ExpensiveAdditionAmmount"
+                  >ExpensiveAdditionAmmount</label
+                ><br />
+                <input
+                  type="number"
+                  id="ExpensiveAdditionAmmount"
+                  placeholder="3000"
+                  value="3000"
+                />
+              </div>
+              <div data-burn-rate="additional" style="display: block">
+                <label for="ExpensiveReductionMonth"
+                  >ExpensiveReductionMonth</label
+                ><br />
+                <select id="ExpensiveReductionMonth">
+                  <option value="-1">none</option>
+                  <option value="0">January</option>
+                  <option value="1">February</option>
+                  <option value="2" selected>March</option>
+                  <option value="3">April</option>
+                  <option value="4">May</option>
+                  <option value="5">June</option>
+                  <option value="6">July</option>
+                  <option value="7">August</option>
+                  <option value="8">September</option>
+                  <option value="9">October</option>
+                  <option value="10">November</option>
+                  <option value="11">December</option>
+                </select>
+              </div>
+              <div data-burn-rate="additional" style="display: block">
+                <label for="ExpensiveReductionRate"
+                  >ExpensiveReductionRate</label
+                ><br />
+                <input
+                  type="number"
+                  id="ExpensiveReductionRate"
+                  placeholder="4"
+                  value="4"
+                />
+              </div>
+            </div>
+            <button
+              id="CalculateBurnRate"
+              type="button"
+              class="btn py-2 px-5 bg-blue-500"
+            >
+              Calculate
+            </button>
+            <div>
+              <span id="BurnStatus">Burn Rate Status ?</span> <br />
+              <!-- <span id="Runaway"> Runaway ?</span> -->
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="chart-container w-full bg-white py-5 px-4 overflow-hidden">
+        <canvas id="BurnRateChart" class="w-full h-full"></canvas>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
