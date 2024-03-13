@@ -35,7 +35,7 @@ setStyleDisplay("none");
 function initGraph() {
   const ctx = document.getElementById("BurnRateChart").getContext("2d");
   const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-  gradient.addColorStop(0, "#00C2AC"); // Light green at the bottom
+  gradient.addColorStop(0, "#AAC2AC"); // Light green at the bottom
   gradient.addColorStop(1, "#C9EBE9"); // Dark green at the top
 
   Graph = new Chart(ctx, {
