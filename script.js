@@ -31,7 +31,7 @@ function getValues() {
 // extra input style handler
 const setStyleDisplay = (d) => document.querySelectorAll("[data-burn-rate]").forEach((e) => (e.style.display = d)); 
 setStyleDisplay("none");
-
+const BalanceData = {}, RunawayData = {};
 function initGraph() {
   const ctx = document.getElementById("BurnRateChart").getContext("2d");
   const gradient = ctx.createLinearGradient(0, 0, 0, 400);
@@ -68,6 +68,20 @@ function initGraph() {
           },
         },
       },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            footer: (tooltipItems) => {
+              const m = tooltipItems[0].label;
+              if (!m) return;
+              let B = BalanceData[m], R = RunawayData[m];
+              return `Balance: ${B ? parseFloat(B).toFixed(2) : ""
+                } \n Runaway: ${R ? parseFloat(R).toFixed(2) : ""
+                }`;
+            },
+          },
+        },
+      },
     },
   });
 }
@@ -77,6 +91,7 @@ function CreateGraph() {
   const values = getValues();
   let [
     {
+      CurrentBalance,
       MonthlyRevenue,
       MonthlyExpensive,
       GrowthRatePercentage,
@@ -88,29 +103,30 @@ function CreateGraph() {
       ExpensiveReductionRate,
     },
     BurnRateSatus,
-  ] = values;
+  ] = values, Runaway;
   GrowthRatePercentage /= 100;
-  if (ExpensiveReductionRate) ExpensiveReductionRate /= 100;
+  if (ExpensiveReductionRate) ExpensiveReductionRate /= 100; 
   let ReduceExpence = () => {
-    if (ExpensiveReductionRate) MonthlyExpensive *= 1 + ExpensiveReductionRate; // Reduce expence at specified Month
+    MonthlyExpensive -= MonthlyExpensive * ExpensiveReductionRate; // Reduce expence at specified Month
   };
   let IncreateExpence = () => {
     if (ExpensiveAdditionAmmount) MonthlyExpensive += ExpensiveAdditionAmmount; // Increase expence at specified Month
   };
-  IncreateExpence();
+  // IncreateExpence();
+  Month.forEach((m, i) => {
+    if (ExpensiveReductionMonth && ExpensiveReductionMonth == i) ReduceExpence(); // For ExpensiveAddition
+    if (ExpensiveAdditionMonth && ExpensiveAdditionMonth == i) IncreateExpence(); // Basic
+    
+    BurnOutData[i] = MonthlyRevenue - MonthlyExpensive;
+    CurrentBalance += BurnOutData[i];
 
-  Month.forEach((_, i) => {
-    if (ExpensiveReductionMonth && ExpensiveReductionMonth == i) ReduceExpence(); // For ExpensiveReduction
-    if (ExpensiveAdditionMonth && ExpensiveAdditionMonth == i) IncreateExpence(); // For ExpensiveAddition
-    // Basic
-    BurnOutData[i] = MonthlyRevenue - MonthlyExpensive; 
-    MonthlyRevenue *= 1 + GrowthRatePercentage; // Increate Revenue
+    Runaway = CurrentBalance / MonthlyExpensive;
+    BalanceData[m] = CurrentBalance; RunawayData[m] = Runaway;
+
+    MonthlyRevenue += MonthlyRevenue * GrowthRatePercentage; // Increate Revenue
   });
 
-  // update graph
-  Graph.data.datasets[0].label = `Burn Rate`;
-  Graph.data.datasets[0].data = BurnOutData;
-  Graph.update();
+  Graph.data.datasets[0].data = BurnOutData; Graph.update();
 
   if (BurnOutData[BurnOutData.length - 1] && BurnOutData[BurnOutData.length - 1] > 0) BurnRateSatus("Your Burn Rate is Positive !");
   else BurnRateSatus("Your Burn Rate is Negative !");
